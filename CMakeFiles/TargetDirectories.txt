@@ -1,0 +1,5 @@
+C:/develop/Anna/test/CMakeFiles/first.dir
+C:/develop/Anna/test/CMakeFiles/test.dir
+C:/develop/Anna/test/CMakeFiles/edit_cache.dir
+C:/develop/Anna/test/CMakeFiles/rebuild_cache.dir
+C:/develop/Anna/test/CMakeFiles/first_autogen.dir
