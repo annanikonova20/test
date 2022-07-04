@@ -1,5 +1,0 @@
-C:/develop/Anna/test/build-string_test-Desktop_Qt_5_12_8_MinGW_64_bit-Debug/CMakeFiles/first.dir
-C:/develop/Anna/test/build-string_test-Desktop_Qt_5_12_8_MinGW_64_bit-Debug/CMakeFiles/test.dir
-C:/develop/Anna/test/build-string_test-Desktop_Qt_5_12_8_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
-C:/develop/Anna/test/build-string_test-Desktop_Qt_5_12_8_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
-C:/develop/Anna/test/build-string_test-Desktop_Qt_5_12_8_MinGW_64_bit-Debug/CMakeFiles/first_autogen.dir

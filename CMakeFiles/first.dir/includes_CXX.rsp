@@ -1,1 +1,0 @@
--IC:/develop/Anna/test -IC:/develop/Anna/test/string_test -IC:/develop/Anna/test/first_autogen/include -isystem C:/Qt/Qt5.12.8/5.12.8/mingw73_64/include -isystem C:/Qt/Qt5.12.8/5.12.8/mingw73_64/include/QtTest -isystem C:/Qt/Qt5.12.8/5.12.8/mingw73_64/include/QtCore -isystem "C:/Qt/Qt5.12.8/5.12.8/mingw73_64/./mkspecs/win32-g++"
