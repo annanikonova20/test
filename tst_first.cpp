@@ -52,8 +52,14 @@ private slots:
     void test_operatorNotEq();
     void test_operatorEqual();
     void test_toStdString();
-    void test_fromUtf8();
     void test_join();
+    void test_toStdU16String();
+    void test_size1();
+    void test_fromStdString();
+    void test_fromStdU16String();
+    void test_split();
+    void test_split1();
+    void test_join1();
 };
 
 first::first()
@@ -131,12 +137,14 @@ void first::test_findLastIndex()
 {
     dfpost::String str = "qwert123абв321";
     QCOMPARE(str.findLastIndex("3"), 11);
+
+    //"©"
 }
 
 void first::test_find()
 {
-    dfpost::String str = "qwert123абв321";
-    QCOMPARE(str.find("3"), 7);
+    dfpost::String str = "qwert12⻰абв321";
+    QCOMPARE(str.find("⻰"), 7);
 }
 
 void first::test_findIndex()
@@ -166,8 +174,8 @@ void first::test_left()
 
 void first::test_left1()
 {
-    dfpost::String str = "qwerty";
-    QCOMPARE(str.left(3), "qwe");
+    dfpost::String str = "みやこqwerty";
+    QCOMPARE(str.left(3), "みやこ");
 }
 
 void first::test_mid()
@@ -214,8 +222,8 @@ void first::test_size()
 
 void first::test_startsWith()
 {
-    dfpost::String str = "qwerty";
-    QVERIFY(str.startsWith("q"));
+    dfpost::String str = "𓀜𓂇qwerty";
+    QVERIFY(str.startsWith("𓀜"));
 }
 
 void first::test_substr()
@@ -226,14 +234,14 @@ void first::test_substr()
 
 void first::test_toLower()
 {
-    dfpost::String str = "QWERTYqwertyАБВ";
-    QCOMPARE(str.toLower(), "qwertyqwertyабв");
+    dfpost::String str = "QWERTYqwertyАБВ☺";
+    QCOMPARE(str.toLower(), "qwertyqwertyабв☺");
 }
 
 void first::test_toUpper()
 {
-    dfpost::String str = "qwertyQWERTYабВ";
-    QCOMPARE(str.toUpper(), "QWERTYQWERTYАБВ");
+    dfpost::String str = "☺qwertyQWERTYабВ";
+    QCOMPARE(str.toUpper(), "☺QWERTYQWERTYАБВ");
 }
 
 void first::test_trimmed()
@@ -251,8 +259,8 @@ void first::test_truncate()
 
 void first::test_operatorPlus()
 {
-    dfpost::String str = "qwe", str1 = "rty";
-    QCOMPARE(str.operator+=(str1), "qwerty");
+    dfpost::String str = "qwe", str1 = "rty💮";
+    QCOMPARE(str.operator+=(str1), "qwerty💮");
 }
 
 void first::test_AnotherOperatorPlus()
@@ -278,37 +286,85 @@ void first::test_operatorEqual()
 {
     dfpost::String str = "qwerty", str1 = "qwerty";
     QVERIFY(str.operator==(str1));
+
 }
 
-void first::test_toStdString() //failed when str compared with std::string
+void first::test_toStdString()
 {
-    dfpost::String str = "qwerty", str1 = "qwerty";
-    str.toStdString();
-    //std::string str1 = "qwerty";
-    QCOMPARE(str, str1);
-}
-
-void first::test_fromUtf8()
-{
-    dfpost::String str = "Q", str1;
-    //str.toUtf8();
-    str.fromUtf8("a", 1);
-    QCOMPARE(str, "str");
-    //QCOMPARE(1, 1);
-
+    dfpost::String str = "qwerty𓅊";
+    std::string STD1 = "qwerty𓅊", STD2;
+    STD2 = str.toStdString();
+    QCOMPARE(STD1, STD2);
 }
 
 void first::test_join()
 {
-    dfpost::String sep = "23", str1;
-    std::vector<std::string> Str;
-    Str.push_back("1");
-    Str.push_back("45");
-    //str1.join(Str, sep);
-    //QCOMPARE(str1, "12345");
-    QCOMPARE(1, 1);
-
+    dfpost::String sep = ",";
+    std::vector<dfpost::String> source = {"Ivanov", "Ivan"};
+    auto result = dfpost::String::join(source, sep);
+    QCOMPARE(result, "Ivanov,Ivan");
 }
+
+void first::test_toStdU16String()
+{
+    dfpost::String str = "★qwerty";
+    std::u16string STD1 = u"★qwerty", STD2;
+    STD2 = str.toStdU16String();
+    QCOMPARE(STD1, STD2);
+}
+
+void first::test_size1()
+{
+    dfpost::String str = "𐏕𐎢𒀱";
+    QCOMPARE(str.size(), 6);
+}
+
+void first::test_fromStdString()
+{
+    dfpost::String DF1 = "qwerty©", DF2;
+    std::string STD1 = "qwerty©";
+    QCOMPARE(DF1, DF2.fromStdString(STD1));
+}
+
+void first::test_fromStdU16String()
+{
+    dfpost::String DF1 = "1qwertyΣ", DF2;
+    std::u16string STD1 = u"1qwertyΣ";
+    QCOMPARE(DF1, DF2.fromStdU16String(STD1));
+}
+
+void first::test_split()
+{
+    dfpost::String str = "123,456", sep = ",";
+    std::vector<dfpost::String> str1 = {"123", "456"};
+    auto splitResult = str.split(sep);
+    QVERIFY(str1 == splitResult);
+}
+
+void first::test_split1()
+{
+    dfpost::String str = "Ivanov,Ivan;Petrov,Petr", sep1 = ';', sep2 = ",";
+    std::vector<dfpost::String> res1 = {"Ivanov", "Ivan"}, res2 = {"Petrov", "Petr"};
+    auto splitResult = str.split(sep1);
+    auto splitRes1 = splitResult[0].split(sep2);
+    auto splitRes2 = splitResult[1].split(sep2);
+    if (res1 == splitRes1)
+        if (res2 == splitRes2)
+        QVERIFY(true);
+}
+
+void first::test_join1()
+{
+    dfpost::String sep1 = ",", sep2 = ";";
+    std::vector<dfpost::String> source1 = {"Ivanov", "Ivan"}, source2 = {"Petrov", "Petr"}, Res;
+    auto result1 = dfpost::String::join(source1, sep1);
+    auto result2 = dfpost::String::join(source2, sep1);
+    Res.push_back(result1);
+    Res.push_back(result2);
+    auto finalResult = dfpost::String::join(Res, sep2);
+    QCOMPARE(finalResult, "Ivanov,Ivan;Petrov,Petr");
+}
+
 
 QTEST_APPLESS_MAIN(first)
 

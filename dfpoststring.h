@@ -70,36 +70,36 @@ public:
 
     static String join(const std::vector<String> &stringList, const dfpost::String & sep) noexcept;
 
-    template <typename StringsContainer>
-    static String join(StringsContainer &&container, const String &separator) noexcept
-    {
-        static_assert(std::is_same<typename StringsContainer::value_type, String>::value,
-                "dfpost::join container::value_type != dfpost::String");
+//    template <typename StringsContainer>
+//    static String join(StringsContainer &&container, const String &separator) noexcept
+//    {
+//        static_assert(std::is_same<typename StringsContainer::value_type, String>::value,
+//                "dfpost::join container::value_type != dfpost::String");
 
-        auto accumulatedSize = [](const StringsContainer &list, String::size_type seplen)
-        {
-            String::size_type result {0};
-            if (!list.empty()) {
-                for (const auto &e : list)
-                    result += e.size() + seplen;
-                result -= seplen;
-            }
-            return result;
-        };
+//        auto accumulatedSize = [](const StringsContainer &list, String::size_type seplen)
+//        {
+//            String::size_type result {0};
+//            if (!list.empty()) {
+//                for (const auto &e : list)
+//                    result += e.size() + seplen;
+//                result -= seplen;
+//            }
+//            return result;
+//        };
 
-        String result;
-        if (!container.empty()) {
-            result.reserve(accumulatedSize(container, separator.size()));
-            const auto end = container.end();
-            auto it = container.begin();
-            result += std::move(*it);
-            while (++it != end) {
-                result += separator;
-                result += std::move(*it);
-            }
-        }
-        return result;
-    }
+//        String result;
+//        if (!container.empty()) {
+//            result.reserve(accumulatedSize(container, separator.size()));
+//            const auto end = container.end();
+//            auto it = container.begin();
+//            result += std::move(*it);
+//            while (++it != end) {
+//                result += separator;
+//                result += std::move(*it);
+//            }
+//        }
+//        return result;
+//    }
 
     String left(size_type n = String::npos) const noexcept;
 
