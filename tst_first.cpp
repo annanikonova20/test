@@ -24,7 +24,11 @@ private slots:
     void test_push_back();
     void test_append();
     void test_contains();
-    void test_compare();
+    void test_notContains();
+    void test_compareMinusOne();
+    void test_compareZero();
+    void test_comparePlusOne();
+    void test_compareRegister();
     void test_endsWith();
     void test_findLastIndex();
     void test_find();
@@ -40,6 +44,7 @@ private slots:
     void test_replacedCopy();
     void test_right();
     void test_size();
+    void test_zeroSize();
     void test_startsWith();
     void test_substr();
     void test_toLower();
@@ -60,6 +65,7 @@ private slots:
     void test_split();
     void test_split1();
     void test_join1();
+
 };
 
 first::first()
@@ -117,14 +123,39 @@ void first::test_append()
 
 void first::test_contains()
 {
-    dfpost::String str = "1234567890";
-    QVERIFY(str.contains("90"));
+    dfpost::String str = "qwe rty";
+    QVERIFY(str.contains("e r"));
 }
 
-void first::test_compare()
+void first::test_notContains()
+{
+    dfpost::String str = "Qwerty";
+    QCOMPARE(str.contains("qW"), false);
+}
+
+void first::test_compareMinusOne()
 {
     dfpost::String str = "1234567890", str1 = str + str.append("1");
     QCOMPARE(str.compare(str1), -1);
+}
+
+void first::test_compareZero()
+{
+    dfpost::String str = "1234567890", str1 = str;
+    QCOMPARE(str.compare(str1), 0);
+}
+
+void first::test_comparePlusOne()
+{
+    dfpost::String str = "1234567890", str1 = "1";
+    QCOMPARE(str.compare(str1), 1);
+}
+
+void first::test_compareRegister()
+{
+    dfpost::String str = "qwerty", str1 = "Qwerty";
+    QCOMPARE(str.compare(str1), 32);
+    qDebug() << str.compare(str1);
 }
 
 void first::test_endsWith()
@@ -137,8 +168,6 @@ void first::test_findLastIndex()
 {
     dfpost::String str = "qwert123абв321";
     QCOMPARE(str.findLastIndex("3"), 11);
-
-    //"©"
 }
 
 void first::test_find()
@@ -190,9 +219,10 @@ void first::test_mid1()
     QCOMPARE(str.mid(5, 2), "");
 }
 
+
 void first::test_replace()
 {
-    dfpost::String str1 = "qwe", str2 = str1 + "rty";
+    dfpost::String str1 = "QWE", str2 = "qwerty";
     QCOMPARE(str1.replace(str1, str2), "qwerty");
 }
 
@@ -218,6 +248,12 @@ void first::test_size()
 {
     dfpost::String str = "0123456789";
     QCOMPARE(str.size(), 10);
+}
+
+void first::test_zeroSize()
+{
+    dfpost::String str = "";
+    QCOMPARE(str.size(), 0);
 }
 
 void first::test_startsWith()
@@ -260,33 +296,32 @@ void first::test_truncate()
 void first::test_operatorPlus()
 {
     dfpost::String str = "qwe", str1 = "rty💮";
-    QCOMPARE(str.operator+=(str1), "qwerty💮");
+    QCOMPARE(str += str1, "qwerty💮");
 }
 
 void first::test_AnotherOperatorPlus()
 {
     dfpost::String str = "qwe";
-    char ch = 'a';
-    QCOMPARE(str.operator+=(ch), "qwea");
+    char sym = 'a';
+    QCOMPARE(str += sym, "qwea");
 }
 
 void first::test_operatorLess()
 {
     dfpost::String str = "QWERTY", str1 = "qwerty";
-    QVERIFY(str.operator<(str1));
+    QVERIFY(str < str1);
 }
 
 void first::test_operatorNotEq()
 {
     dfpost::String str = "QWERTY", str1 = "qwerty";
-    QVERIFY(str.operator!=(str1));
+    QVERIFY(str != str1);
 }
 
 void first::test_operatorEqual()
 {
     dfpost::String str = "qwerty", str1 = "qwerty";
-    QVERIFY(str.operator==(str1));
-
+    QVERIFY(str == str1);
 }
 
 void first::test_toStdString()
