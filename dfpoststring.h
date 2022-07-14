@@ -70,12 +70,12 @@ public:
 
     static String join(const std::vector<String> &stringList, const dfpost::String & sep) noexcept;
 
-//    template <typename StringsContainer>
-//    static String join(StringsContainer &&container, const String &separator) noexcept
-//    {
-//        static_assert(std::is_same<typename StringsContainer::value_type, String>::value,
-//                "dfpost::join container::value_type != dfpost::String");
 
+    //    template <typename StringsContainer>
+    //    static String join(StringsContainer &&container, const String &separator) noexcept
+    //    {
+    //        static_assert(std::is_same<typename StringsContainer::value_type, String>::value,
+    //                "dfpost::join container::value_type != dfpost::String");
 //        auto accumulatedSize = [](const StringsContainer &list, String::size_type seplen)
 //        {
 //            String::size_type result {0};

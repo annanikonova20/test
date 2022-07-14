@@ -65,6 +65,11 @@ private slots:
     void test_split();
     void test_split1();
     void test_join1();
+    void test_constructorDefault();
+    void test_constructor1();
+    void test_constructor2();
+    void test_constructor3();
+    void test_constructor4();
 
 };
 
@@ -155,7 +160,6 @@ void first::test_compareRegister()
 {
     dfpost::String str = "qwerty", str1 = "Qwerty";
     QCOMPARE(str.compare(str1), 32);
-    qDebug() << str.compare(str1);
 }
 
 void first::test_endsWith()
@@ -400,6 +404,35 @@ void first::test_join1()
     QCOMPARE(finalResult, "Ivanov,Ivan;Petrov,Petr");
 }
 
+void first::test_constructorDefault()
+{
+    QCOMPARE(dfpost::String(), "");
+}
+
+void first::test_constructor1()
+{
+    QCOMPARE(dfpost::String('q'), 'q');
+}
+
+void first::test_constructor2()
+{
+    char str_source[3] = {'1', '2', '3'};
+    char * str_ptr = str_source;
+    QCOMPARE(dfpost::String(str_ptr), "123");
+}
+
+void first::test_constructor3()
+{
+    dfpost::String src = "qwerty";
+    const dfpost::String &str = src;
+    QCOMPARE(dfpost::String(str), "qwerty");
+}
+
+void first::test_constructor4()
+{
+    dfpost::String &&str = "qwerty";
+    QCOMPARE(dfpost::String(str), "qwerty");
+}
 
 QTEST_APPLESS_MAIN(first)
 
