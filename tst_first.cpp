@@ -5,6 +5,7 @@ using namespace std;
 #include <iostream>
 #include <vector>
 #include <QByteArray>
+#include <fstream>
 
 // add necessary includes here
 
@@ -70,6 +71,13 @@ private slots:
     void test_constructor2();
     void test_constructor3();
     void test_constructor4();
+    void test_fromUtf16();
+    void test_fromUtf16Str();
+    void test_assignment();
+    void test_compare_data();
+    void test_compare();
+    void test_size0_data();
+    void test_size0();
 
 };
 
@@ -114,8 +122,8 @@ void first::test_clear()
 void first::test_push_back()
 {
     dfpost::String str = "123";
-    str.push_back('4');
-    QCOMPARE(str, "1234");
+    str.push_back("45");
+    QCOMPARE(str, "12345");
 }
 
 void first::test_append()
@@ -165,19 +173,19 @@ void first::test_compareRegister()
 void first::test_endsWith()
 {
     dfpost::String str = "аБвГдЕ";
-    QVERIFY(str.endsWith("Е"));
+    QVERIFY(str.endsWith("дЕ"));
 }
 
 void first::test_findLastIndex()
 {
-    dfpost::String str = "qwert123абв321";
-    QCOMPARE(str.findLastIndex("3"), 11);
+    dfpost::String str = "qwert123абв123";
+    QCOMPARE(str.findLastIndex("123"), 11);
 }
 
 void first::test_find()
 {
     dfpost::String str = "qwert12⻰абв321";
-    QCOMPARE(str.find("⻰"), 7);
+    QCOMPARE(str.find("⻰а"), 7);
 }
 
 void first::test_findIndex()
@@ -223,7 +231,6 @@ void first::test_mid1()
     QCOMPARE(str.mid(5, 2), "");
 }
 
-
 void first::test_replace()
 {
     dfpost::String str1 = "QWE", str2 = "qwerty";
@@ -263,7 +270,7 @@ void first::test_zeroSize()
 void first::test_startsWith()
 {
     dfpost::String str = "𓀜𓂇qwerty";
-    QVERIFY(str.startsWith("𓀜"));
+    QVERIFY(str.startsWith("𓀜𓂇"));
 }
 
 void first::test_substr()
@@ -433,6 +440,64 @@ void first::test_constructor4()
     dfpost::String &&str = "qwerty";
     QCOMPARE(dfpost::String(str), "qwerty");
 }
+
+void first::test_fromUtf16()
+{
+    char16_t str_source[4] = {u'q', u'Ц', u'©', u'©'};
+    char16_t * str_ptr = str_source;
+    auto res = dfpost::String::fromUtf16(str_ptr, 3);
+    QCOMPARE(res, "qЦ©");
+}
+
+void first::test_fromUtf16Str()
+{
+    std::uint16_t str_source[4] = {u'q', u'Ц', u'©', u'w'};
+    std::uint16_t * str_ptr = str_source;
+    auto res = dfpost::String::fromUtf16(str_ptr, 3);
+    QCOMPARE(res, "qЦ©");
+}
+
+void first::test_assignment()
+{
+      dfpost::String str = "qwerty";
+      QCOMPARE(str, "qwerty");
+}
+
+void first::test_compare_data()
+{
+    QTest::addColumn<QString>("str1");
+    QTest::addColumn<QString>("str2");
+    QTest::addColumn<int>("expected");
+    QTest::newRow("Compare result Minus One") << "1234567890" << "12345678901" << -1;
+    QTest::newRow("Compare result Plus one") << "0" << "" << 1;
+    QTest::newRow("Compare result Zero") << "qwerty" << "qwerty" << 0;
+    QTest::newRow("Compare Register") << "qwerty" << "Qwerty" << 32;
+}
+
+void first::test_compare()
+{
+    QFETCH(QString, str1);
+    QFETCH(QString, str2);
+    QFETCH(int, expected);
+    QCOMPARE(str1.compare(str2), expected);
+}
+
+void first::test_size0_data()
+{
+    QTest::addColumn<QString>("str");
+    QTest::addColumn<int>("expected");
+    QTest::newRow("Zero Size") << "" << 0;
+    QTest::newRow("Size 1") << "qwerty" << 6;
+    QTest::newRow("Size 2") << "𐏕𐎢𒀱" << 6;
+}
+
+void first::test_size0()
+{
+    QFETCH(QString, str);
+    QFETCH(int, expected);
+    QCOMPARE(str.size(), expected);
+}
+
 
 QTEST_APPLESS_MAIN(first)
 
